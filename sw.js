@@ -33,3 +33,22 @@ app.get("/characters", async (req, res) => {
         });
     }
 });
+
+app.get("/characters/:id", async (req, res) => {
+
+    try {
+
+        const id = +req.params.id;
+
+        const response = await fetch(api_url);
+
+        const data = await response.json();
+
+        const character = data[id - 1];
+
+        // Ha nincs ilyen karakter
+        if (!character) {
+            return res.status(404).json({
+                message: "Character not found"
+            });
+        }
