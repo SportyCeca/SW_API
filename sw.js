@@ -56,3 +56,12 @@ app.get("/characters/:id", async (req, res) => {
             hairColor: character.hair_color,
             eyeColor: character.eye_color,
             skinColor: character.skin_color,
+            image: "/assets/bckgrnd.jpg"
+        };
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({
+            message: "Szerver hiba."
+        });
+    }
+});
