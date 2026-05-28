@@ -37,7 +37,6 @@ app.get("/characters", async (req, res) => {
 app.get("/characters/:id", async (req, res) => {
 
     try {
-
         const id = +req.params.id;
         const response = await fetch(api_url);
         const data = await response.json();
@@ -64,4 +63,40 @@ app.get("/characters/:id", async (req, res) => {
             message: "Szerver hiba."
         });
     }
+});
+
+app.get("/search", async (req, res) => {
+    try {
+        const name = req.query.name;
+        const response = await fetch(api_url);
+        const data = await response.json();
+        const characters = data
+            .map((character, index) => ({
+                id: index + 1,
+                name: character.name,
+                gender: character.gender,
+                birthYear: character.birth_year,
+                height: character.height,
+                hairColor: character.hair_color,
+                eyeColor: character.eye_color,
+                skinColor: character.skin_color,
+                image: "/assets/bckgrnd.jpg"
+            }))
+            .filter(character =>
+                character.name.toLowerCase().includes(name.toLowerCase())
+            );
+        if (characters.length === 0) {
+            return res.status(404).json({
+                message: "Nincs találat."
+            });
+        }
+        res.status(200).json(characters);
+    } catch (error) {
+        res.status(500).json({
+            message: "Szerver hiba."
+        });
+    }
+});
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
