@@ -39,16 +39,20 @@ app.get("/characters/:id", async (req, res) => {
     try {
 
         const id = +req.params.id;
-
         const response = await fetch(api_url);
-
         const data = await response.json();
-
         const character = data[id - 1];
-
-        // Ha nincs ilyen karakter
         if (!character) {
             return res.status(404).json({
-                message: "Character not found"
+                message: "Sajnálom, de úgy tűnik, a keresett karakter nem létezik. Talán az archívum hiányos."
             });
         }
+        const result = {
+            id: id,
+            name: character.name,
+            gender: character.gender,
+            birthYear: character.birth_year,
+            height: character.height,
+            hairColor: character.hair_color,
+            eyeColor: character.eye_color,
+            skinColor: character.skin_color,
